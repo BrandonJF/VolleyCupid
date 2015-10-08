@@ -3,12 +3,20 @@ package com.brandonjf.volleycupid;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.brandonjf.volleycupid.okclasses.OkRecyclerViewAdapter;
+import com.brandonjf.volleycupid.okclasses.QuickmatchMatch;
+
+import java.util.ArrayList;
+
 public class BrowseActivity extends AppCompatActivity implements OkResponseInterface{
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +33,9 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
             }
         });
 
+
+        //Find the elements on the page
+       handlePageSetup();
         //Get the data from the OkCupid servers
         loadAllData();
     }
@@ -52,10 +63,17 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
     }
 
     @Override
-    public void onQuickmatchQueueListener(String username) {
-
+    public void onQuickmatchQueueListener(ArrayList<QuickmatchMatch> quickmatchMatches) {
+        OkRecyclerViewAdapter rvAdapter = new OkRecyclerViewAdapter(quickmatchMatches);
+        recyclerView.setAdapter(rvAdapter);
     }
 
+    public void handlePageSetup(){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView = (RecyclerView) findViewById(R.id.rv_matchList);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+    }
     public void loadAllData(){
         loadQuickmatchData();
     }
