@@ -64,8 +64,11 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
         if (rvAdapter == null){
             rvAdapter = new OkRecyclerViewAdapter(quickmatchMatches);
             recyclerView.setAdapter(rvAdapter);
+            dismissAlert();
         } else{
-
+            int scrollToPos = rvAdapter.addItems(quickmatchMatches);
+            recyclerView.smoothScrollToPosition(scrollToPos);
+            dismissAlertPositively("Done");
         }
     }
 
@@ -94,20 +97,31 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
     }
 
     public void checkToken(){
-        OkAuthLib.getInstance(this).init(getApplicationContext());
-        if (settings.getString("TOKEN_ACCESS", "MEOW") == null){
-
-        };
+//        OkAuthLib.getInstance(this).init(getApplicationContext());
+//        if (settings.getString("TOKEN_ACCESS", "MEOW") == null){
+//
+//        };
     }
     public void loadAllData(){
-        alertUser("Loading matches...", Snackbar.LENGTH_INDEFINITE);
         loadQuickmatchData();
     }
 
     public void loadQuickmatchData(){
+        alertUser("Loading matches...", Snackbar.LENGTH_INDEFINITE);
         QuickmatchLib.getInstance(this).getQueue(getApplicationContext());
     }
 
+    public void dismissAlert(){
+        if (alertBar.isShown()){
+            alertBar.dismiss();
+        }
+    }
+
+    public void dismissAlertPositively(String message){
+        if (alertBar.isShown()){
+            alertBar.setText(message).setDuration(Snackbar.LENGTH_SHORT).show();
+        }
+    }
     public void alertUser(String message){
         if (alertBar.isShown()){
             alertBar.dismiss();

@@ -48,6 +48,13 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
         return mMatches.size();
     }
 
+    public int addItems(ArrayList<QuickmatchMatch> quickmatchMatches){
+        int currentLastItem = this.getItemCount();
+        mMatches.addAll(quickmatchMatches);
+        this.notifyDataSetChanged();
+        return currentLastItem + 1;
+    }
+
     public static class MatchViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView username, age;

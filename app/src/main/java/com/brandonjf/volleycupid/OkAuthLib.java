@@ -25,7 +25,7 @@ private String mClientSecret;
     private static OkAuthLib mInstance;
     private Response.Listener responseListener = new Response.Listener<JSONObject>() {
         @Override
-        public void onResponse(JSONObject response) {o
+        public void onResponse(JSONObject response) {
             try {
 //               parseQuickmatchQueueJson(response);
             } catch (Exception e) {
@@ -60,7 +60,7 @@ private String mClientSecret;
     }
 
     public void getQueue(Context context) {
-        String url = API_ENDPOINT + "?access_token=" + context.getString(R.string.ok_token);
+        String url = "?access_token=" + context.getString(R.string.ok_token);
         OkJsonRequest quickmatchQueueRequest = new OkJsonRequest(Request.Method.GET, url, null, responseListener, errorListener);
         quickmatchQueueRequest.setPriority(Request.Priority.LOW);
         ApplicationController.getInstance().addToRequestQueue(quickmatchQueueRequest);
