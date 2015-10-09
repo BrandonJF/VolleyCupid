@@ -1,7 +1,9 @@
 package com.brandonjf.volleycupid;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,25 +19,20 @@ import java.util.ArrayList;
 
 public class BrowseActivity extends AppCompatActivity implements OkResponseInterface{
     RecyclerView recyclerView;
+    OkRecyclerViewAdapter rvAdapter;
+    Snackbar alertBar;
+    SharedPreferences settings;
+    String token;
+    public static final String PREFS_NAME = "VolleyCupidPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               loadAllData();
-            }
-        });
-
-
         //Find the elements on the page
-       handlePageSetup();
+        handlePageSetup();
+        loadSharedPreferences();
+        checkToken();
         //Get the data from the OkCupid servers
         loadAllData();
     }
@@ -64,21 +61,69 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
 
     @Override
     public void onQuickmatchQueueListener(ArrayList<QuickmatchMatch> quickmatchMatches) {
-        OkRecyclerViewAdapter rvAdapter = new OkRecyclerViewAdapter(quickmatchMatches);
-        recyclerView.setAdapter(rvAdapter);
+        if (rvAdapter == null){
+            rvAdapter = new OkRecyclerViewAdapter(quickmatchMatches);
+            recyclerView.setAdapter(rvAdapter);
+        } else{
+
+        }
     }
 
-    public void handlePageSetup(){
+    @Override
+    public void onAccessTokenReceivedListener(String accessToken) {
+        loadQuickmatchData();
+    }
+
+    public void loadSharedPreferences(){
+        settings = getSharedPreferences(PREFS_NAME, 0);
+    }
+    public void handlePageSetup() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView = (RecyclerView) findViewById(R.id.rv_matchList);
         recyclerView.setLayoutManager(linearLayoutManager);
+        alertBar = Snackbar.make(findViewById(R.id.cl_browseCoordinator),"VolleyCupid", Snackbar.LENGTH_SHORT);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadAllData();
+            }
+        });
+    }
 
+    public void checkToken(){
+        OkAuthLib.getInstance(this).init(getApplicationContext());
+        if (settings.getString("TOKEN_ACCESS", "MEOW") == null){
+
+        };
     }
     public void loadAllData(){
+        alertUser("Loading matches...", Snackbar.LENGTH_INDEFINITE);
         loadQuickmatchData();
     }
 
     public void loadQuickmatchData(){
         QuickmatchLib.getInstance(this).getQueue(getApplicationContext());
     }
+
+    public void alertUser(String message){
+        if (alertBar.isShown()){
+            alertBar.dismiss();
+        }
+        if (!alertBar.isShown()){
+            alertBar.setText(message).setDuration(Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    public void alertUser(String message, int duration){
+        if (alertBar.isShown()){
+            alertBar.dismiss();
+        }
+        if (!alertBar.isShown()){
+            alertBar.setText(message).setDuration(duration).show();
+        }
+    }
+
 }

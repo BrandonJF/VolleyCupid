@@ -17,9 +17,10 @@ import java.util.ArrayList;
  * Created by brandon on 10/8/15.
  */
 public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAdapter.MatchViewHolder> {
-   ArrayList<QuickmatchMatch> quickmatchMatches;
-    public OkRecyclerViewAdapter(ArrayList<QuickmatchMatch> quickmatchMatches){
-        this.quickmatchMatches = quickmatchMatches;
+    ArrayList<QuickmatchMatch> mMatches;
+
+    public OkRecyclerViewAdapter(ArrayList<QuickmatchMatch> quickmatchMatches) {
+        this.mMatches = quickmatchMatches;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
 
     @Override
     public void onBindViewHolder(MatchViewHolder matchViewHolder, int position) {
-        QuickmatchMatch match = quickmatchMatches.get(position);
+        QuickmatchMatch match = mMatches.get(position);
         matchViewHolder.username.setText(match.getUsername());
         matchViewHolder.age.setText(match.getUserinfo().getAge().toString());
         matchViewHolder.userPhoto.setImageUrl(match.getThumbs().get(0).get400x400(), ApplicationController.getInstance().getmImageLoader());
@@ -44,14 +45,15 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
 
     @Override
     public int getItemCount() {
-        return quickmatchMatches.size();
+        return mMatches.size();
     }
 
-    public static class MatchViewHolder extends RecyclerView.ViewHolder{
+    public static class MatchViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView username, age;
         NetworkImageView userPhoto;
-        MatchViewHolder(View matchView){
+
+        MatchViewHolder(View matchView) {
             super(matchView);
             cardView = (CardView) matchView.findViewById(R.id.matchCardView);
             username = (TextView) matchView.findViewById(R.id.tv_username);
@@ -61,7 +63,6 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
 
         }
     }
-
 
 
 }

@@ -28,6 +28,7 @@ public class ApplicationController extends Application {
         super.onCreate();
         mImageCache = new ImageLoader.ImageCache() {
             private LruCache<String, Bitmap> cache = new LruCache<>((int) (Runtime.getRuntime().maxMemory() / 1024) / 8);
+
             @Override
             public Bitmap getBitmap(String url) {
                 return cache.get(url);
@@ -50,7 +51,7 @@ public class ApplicationController extends Application {
         return mRequestQueue;
     }
 
-    public ImageLoader getmImageLoader(){
+    public ImageLoader getmImageLoader() {
         return mImageLoader;
     }
 

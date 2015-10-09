@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
 <android.support.v7.widget.CardView
+    android:id="@+id/matchCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/matchCardView"
     >
 
         <FrameLayout
@@ -17,9 +15,9 @@
             >
 
             <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/user_image"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:id="@+id/user_image"
                 android:background="#a7a3a3"
                 android:scaleType="centerCrop" />
 
@@ -35,22 +33,22 @@
 
 
                 <TextView
+                    android:id="@+id/tv_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:text="Header"
                     android:textColor="#FFF"
-                    android:id="@+id/tv_username"
-                    android:textSize="@dimen/abc_text_size_title_material" />
+                    android:textSize="@dimen/abc_text_size_title_material"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:layout_below="@+id/tv_username"
+                    android:id="@+id/tv_age"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_username"
                     android:text="Subtitle"
                     android:textColor="#FFF"
-                    android:textSize="@dimen/abc_text_size_subhead_material"
-                    android:id="@+id/tv_age" />
+                    android:textSize="@dimen/abc_text_size_subhead_material" />
 
             </RelativeLayout>
         </FrameLayout>

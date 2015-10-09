@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class QuickmatchLib {
 //    private final static String API_KEY = "23ed6c48a8904099ee2e6df28cbb5f42";
-    final static String API_ENDPOINT = "https://api.okcupid.com/1/quickmatch";
+final static String API_ENDPOINT = "https://api.okcupid.com/1/quickmatch";
     public static OkResponseInterface okResponseInterface;
     private static QuickmatchLib mInstance;
     private Response.Listener responseListener = new Response.Listener<JSONObject>() {
@@ -51,19 +51,19 @@ public class QuickmatchLib {
     }
 
     public void parseQuickmatchQueueJson(JSONObject jsonResponse){
-        try{
+        try {
             Gson gson = new Gson();
             ArrayList<QuickmatchMatch> quickmatchMatches = new ArrayList<QuickmatchMatch>();
 
             JSONArray matches = jsonResponse.getJSONArray("matches");
-            for (int i = 0; i < matches.length(); i++){
+            for (int i = 0; i < matches.length(); i++) {
                 JSONObject match = matches.getJSONObject(i);
                 QuickmatchMatch tempMatch = gson.fromJson(match.toString(), QuickmatchMatch.class);
                 quickmatchMatches.add(tempMatch);
             }
             Log.d("QuickmatchLib", "Done loading quickmatch queue.");
             okResponseInterface.onQuickmatchQueueListener(quickmatchMatches);
-        } catch (Exception e){
+        } catch (Exception e) {
             Log.d("QuickmatchLib", e.toString());
         }
 

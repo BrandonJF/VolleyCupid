@@ -10,4 +10,5 @@ import java.util.ArrayList;
 public interface OkResponseInterface {
 
     void onQuickmatchQueueListener(ArrayList<QuickmatchMatch> quickmatchMatches);
+    void onAccessTokenReceivedListener(String accessToken);
 }
