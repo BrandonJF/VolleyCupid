@@ -52,10 +52,10 @@ private String mClientSecret;
     }
 
     public void init(Context context){
-        String authEndpoint = context.getString(R.string.oauth_endpoint_auth);
-        String tokenEndpoint = context.getString(R.string.oauth_endpoint_token);
-        String clientId = context.getString(R.string.oauth_client_id);
-        String clientSecret =context.getString(R.string.oauth_client_secret);
+        mAuthEndpoint = context.getString(R.string.oauth_endpoint_auth);
+        mTokenEndpoint = context.getString(R.string.oauth_endpoint_token);
+        mClientId = context.getString(R.string.oauth_client_id);
+        mClientSecret =context.getString(R.string.oauth_client_secret);
 
     }
 
