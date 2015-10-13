@@ -1,6 +1,7 @@
 package com.brandonjf.volleycupid;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -9,13 +10,15 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
+import java.net.URL;
+
 /**
  * Created by brandon on 10/1/15.
  */
 public class OkAuthLib {
 
-final static String AUTH_ENDPOINT = "https://api.okcupid.com/oauth2/authorize";
-final static String TOKEN_ENDPOINT = "https://api.okcupid.com/oauth2/token";
+final static String AUTH_ENDPOINT = "https://api.okcupid.com/oauth2/authorize?";
+final static String TOKEN_ENDPOINT = "https://api.okcupid.com/oauth2/token?";
 private String mAuthEndpoint;
 private String mTokenEndpoint;
 private String mClientId;
@@ -56,6 +59,19 @@ private String mClientSecret;
         mTokenEndpoint = context.getString(R.string.oauth_endpoint_token);
         mClientId = context.getString(R.string.oauth_client_id);
         mClientSecret =context.getString(R.string.oauth_client_secret);
+    }
+
+    private void getAuthorizationCode(){
+        if (mClientId.isEmpty()){
+            return;
+        }
+        Uri authUri = Uri.parse(mAuthEndpoint)
+                .buildUpon()
+                .appendQueryParameter("client_id", mClientId)
+                .appendQueryParameter("response_type", "code")
+                .appendQueryParameter("redirect_uri", )
+                .build();
+        String authUrl = authUri.toString();
 
     }
 

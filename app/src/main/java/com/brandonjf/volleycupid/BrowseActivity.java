@@ -97,7 +97,8 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
     }
 
     public void checkToken(){
-//        OkAuthLib.getInstance(this).init(getApplicationContext());
+        OkAuthLib.getInstance(this).init(getApplicationContext());
+
 //        if (settings.getString("TOKEN_ACCESS", "MEOW") == null){
 //
 //        };
