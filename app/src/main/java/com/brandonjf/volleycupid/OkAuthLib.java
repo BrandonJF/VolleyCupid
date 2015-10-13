@@ -1,8 +1,11 @@
 package com.brandonjf.volleycupid;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -10,22 +13,24 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
-import java.net.URL;
-
 /**
  * Created by brandon on 10/1/15.
  */
 public class OkAuthLib {
 
-final static String AUTH_ENDPOINT = "https://api.okcupid.com/oauth2/authorize?";
-final static String TOKEN_ENDPOINT = "https://api.okcupid.com/oauth2/token?";
-private String mAuthEndpoint;
-private String mTokenEndpoint;
-private String mClientId;
-private String mClientSecret;
+    final static String AUTH_ENDPOINT = "https://api.okcupid.com/oauth2/authorize?";
+    final static String TOKEN_ENDPOINT = "https://api.okcupid.com/oauth2/token?";
+    final static String REDIRECT_URI = "brandonjf://redirect";
+    private String mAuthEndpoint;
+    private String mTokenEndpoint;
+    private String mClientId;
+    private String mClientSecret;
+    private WebView webView;
+    private ProgressDialog progressDialog;
 
     public static OkResponseInterface okResponseInterface;
     private static OkAuthLib mInstance;
+
     private Response.Listener responseListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
@@ -36,6 +41,7 @@ private String mClientSecret;
             }
         }
     };
+
     private Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
@@ -72,6 +78,8 @@ private String mClientSecret;
                 .appendQueryParameter("redirect_uri", )
                 .build();
         String authUrl = authUri.toString();
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, authUri);
+
 
     }
 
