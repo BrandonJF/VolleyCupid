@@ -136,9 +136,14 @@ public class OkAuthLib {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        setAccessToken(response.getString("access_token"));
-                        setRefreshToken(response.getString("refresh_token"));
-                        okResponseInterface.onAccessTokenReceivedListener(getAccessToken());
+                        String at = response.getString("access_token");
+                        String rt = response.getString("refresh_token");
+                        setAccessToken(at);
+                        setRefreshToken(rt);
+                        Map<String,String> tokenMap  = new HashMap<String, String>();
+                        tokenMap.put("access_token", at);
+                        tokenMap.put("refresh_token", rt);
+                        okResponseInterface.onAccessTokenReceivedListener(tokenMap);
                     } catch (Exception e) {
                         Log.d("OkAuthLib", e.toString());
                     }

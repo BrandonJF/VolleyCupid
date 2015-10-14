@@ -1,5 +1,6 @@
 package com.brandonjf.volleycupid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import com.brandonjf.volleycupid.okclasses.OkRecyclerViewAdapter;
 import com.brandonjf.volleycupid.okclasses.QuickmatchMatch;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class BrowseActivity extends AppCompatActivity implements OkResponseInterface{
     RecyclerView recyclerView;
@@ -85,12 +87,17 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
     }
 
     @Override
-    public void onAccessTokenReceivedListener(String accessToken) {
+    public void onAccessTokenReceivedListener(Map tokenMap) {
+        String at = tokenMap.get("access_token").toString();
+        String rt = tokenMap.get("refresh_token").toString();
+        settings.edit().putString("accessToken", at);
+        settings.edit().putString("refreshToken", rt);
+        settings.edit().apply();
         loadQuickmatchData();
     }
 
     public void loadSharedPreferences(){
-        settings = getSharedPreferences(PREFS_NAME, 0);
+        settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
     public void handlePageSetup() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
