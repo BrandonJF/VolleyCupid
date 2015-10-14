@@ -25,4 +25,8 @@ public class OkJsonRequest extends JsonObjectRequest {
         return mPriority == null ? Priority.NORMAL : mPriority;
     }
 
+    @Override
+    public String getBodyContentType() {
+        return "application/x-www-form-urlencoded; charset=UTF-8";
+    }
 }
