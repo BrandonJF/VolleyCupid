@@ -30,7 +30,7 @@ private String mClientSecret;
         @Override
         public void onResponse(JSONObject response) {
             try {
-//               parseQuickmatchQueueJson(response);
+//               parseQuickmatchQueueJson(response)
             } catch (Exception e) {
                 Log.d("QuickmatchLib", e.toString());
             }
@@ -58,7 +58,7 @@ private String mClientSecret;
         mAuthEndpoint = context.getString(R.string.oauth_endpoint_auth);
         mTokenEndpoint = context.getString(R.string.oauth_endpoint_token);
         mClientId = context.getString(R.string.oauth_client_id);
-        mClientSecret =context.getString(R.string.oauth_client_secret);
+        mClientSecret = context.getString(R.string.oauth_client_secret);
     }
 
     private void getAuthorizationCode(){
