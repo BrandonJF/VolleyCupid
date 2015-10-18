@@ -1,6 +1,9 @@
 package com.brandonjf.volleycupid;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +19,7 @@ import com.brandonjf.volleycupid.okclasses.OkRecyclerViewAdapter;
 import com.brandonjf.volleycupid.okclasses.QuickmatchMatch;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class BrowseActivity extends AppCompatActivity implements OkResponseInterface{
     RecyclerView recyclerView;
@@ -32,9 +36,9 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
         //Find the elements on the page
         handlePageSetup();
         loadSharedPreferences();
-        checkToken();
+        handleToken();
         //Get the data from the OkCupid servers
-        loadAllData();
+        //loadAllData();
     }
 
     @Override
@@ -43,6 +47,16 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
         getMenuInflater().inflate(R.menu.menu_browse, menu);
         return true;
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Uri uri = intent.getData();
+        if (uri != null){
+           Intent test = intent;
+         }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -73,12 +87,17 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
     }
 
     @Override
-    public void onAccessTokenReceivedListener(String accessToken) {
+    public void onAccessTokenReceivedListener(Map tokenMap) {
+        String at = tokenMap.get("access_token").toString();
+        String rt = tokenMap.get("refresh_token").toString();
+        settings.edit().putString("accessToken", at);
+        settings.edit().putString("refreshToken", rt);
+        settings.edit().apply();
         loadQuickmatchData();
     }
 
     public void loadSharedPreferences(){
-        settings = getSharedPreferences(PREFS_NAME, 0);
+        settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
     public void handlePageSetup() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -96,12 +115,15 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
         });
     }
 
-    public void checkToken(){
-        OkAuthLib.getInstance(this).init(getApplicationContext());
+    public void handleToken(){
+        Uri tokenUri = getIntent().getData();
+        if (tokenUri == null){
+            OkAuthLib.getInstance(this).init(getApplicationContext()).startAuthentication();
+        } else {
+            String token = tokenUri.getQueryParameter("code");
+            OkAuthLib.getInstance(this).init(getApplicationContext()).setAuthorizationCode(token);
+        }
 
-//        if (settings.getString("TOKEN_ACCESS", "MEOW") == null){
-//
-//        };
     }
     public void loadAllData(){
         loadQuickmatchData();

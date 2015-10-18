@@ -71,7 +71,7 @@ final static String API_ENDPOINT = "https://api.okcupid.com/1/quickmatch";
 //        okResponseInterface.onQuickmatchQueueListener();
     }
     public void getQueue(Context context) {
-        String url = API_ENDPOINT + "?access_token=" + context.getString(R.string.ok_token);
+        String url = API_ENDPOINT + "?access_token=" + OkAuthLib.getInstance().getAccessToken();
         OkJsonRequest quickmatchQueueRequest = new OkJsonRequest(Request.Method.GET, url, null, responseListener, errorListener);
         quickmatchQueueRequest.setPriority(Request.Priority.LOW);
         ApplicationController.getInstance().addToRequestQueue(quickmatchQueueRequest);
