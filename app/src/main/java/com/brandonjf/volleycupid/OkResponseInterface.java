@@ -1,9 +1,9 @@
 package com.brandonjf.volleycupid;
 
+import com.brandonjf.volleycupid.okclasses.AuthResponse;
 import com.brandonjf.volleycupid.okclasses.QuickmatchMatch;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by brandon on 10/1/15.
@@ -11,5 +11,5 @@ import java.util.Map;
 public interface OkResponseInterface {
 
     void onQuickmatchQueueListener(ArrayList<QuickmatchMatch> quickmatchMatches);
-    void onAccessTokenReceivedListener(Map tokenObject);
+    void onAccessTokenReceivedListener(AuthResponse authResponse);
 }

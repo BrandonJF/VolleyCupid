@@ -14,10 +14,10 @@ public class QuickmatchMatch {
     private Boolean online;
     @SerializedName("userinfo")
     @Expose
-    private Userinfo userinfo;
+    private com.brandonjf.volleycupid.okclasses.Userinfo userinfo;
     @SerializedName("percentages")
     @Expose
-    private Percentages percentages;
+    private com.brandonjf.volleycupid.okclasses.Percentages percentages;
     @SerializedName("userid")
     @Expose
     private String userid;
@@ -26,7 +26,7 @@ public class QuickmatchMatch {
     private String username;
     @SerializedName("thumbs")
     @Expose
-    private List<Thumb> thumbs = new ArrayList<Thumb>();
+    private List<com.brandonjf.volleycupid.okclasses.Thumb> thumbs = new ArrayList<com.brandonjf.volleycupid.okclasses.Thumb>();
 
     /**
      * @return The online
@@ -45,28 +45,28 @@ public class QuickmatchMatch {
     /**
      * @return The userinfo
      */
-    public Userinfo getUserinfo() {
+    public com.brandonjf.volleycupid.okclasses.Userinfo getUserinfo() {
         return userinfo;
     }
 
     /**
      * @param userinfo The userinfo
      */
-    public void setUserinfo(Userinfo userinfo) {
+    public void setUserinfo(com.brandonjf.volleycupid.okclasses.Userinfo userinfo) {
         this.userinfo = userinfo;
     }
 
     /**
      * @return The percentages
      */
-    public Percentages getPercentages() {
+    public com.brandonjf.volleycupid.okclasses.Percentages getPercentages() {
         return percentages;
     }
 
     /**
      * @param percentages The percentages
      */
-    public void setPercentages(Percentages percentages) {
+    public void setPercentages(com.brandonjf.volleycupid.okclasses.Percentages percentages) {
         this.percentages = percentages;
     }
 
@@ -101,14 +101,14 @@ public class QuickmatchMatch {
     /**
      * @return The thumbs
      */
-    public List<Thumb> getThumbs() {
+    public List<com.brandonjf.volleycupid.okclasses.Thumb> getThumbs() {
         return thumbs;
     }
 
     /**
      * @param thumbs The thumbs
      */
-    public void setThumbs(List<Thumb> thumbs) {
+    public void setThumbs(List<com.brandonjf.volleycupid.okclasses.Thumb> thumbs) {
         this.thumbs = thumbs;
     }
 

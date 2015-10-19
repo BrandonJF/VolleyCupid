@@ -15,11 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.brandonjf.volleycupid.okclasses.AuthResponse;
 import com.brandonjf.volleycupid.okclasses.OkRecyclerViewAdapter;
 import com.brandonjf.volleycupid.okclasses.QuickmatchMatch;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class BrowseActivity extends AppCompatActivity implements OkResponseInterface{
     RecyclerView recyclerView;
@@ -74,7 +74,7 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
     }
 
     @Override
-    public void onQuickmatchQueueListener(ArrayList<QuickmatchMatch> quickmatchMatches) {
+    public void onQuickmatchQueueListener(ArrayList <QuickmatchMatch> quickmatchMatches) {
         if (rvAdapter == null){
             rvAdapter = new OkRecyclerViewAdapter(quickmatchMatches);
             recyclerView.setAdapter(rvAdapter);
@@ -87,12 +87,12 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
     }
 
     @Override
-    public void onAccessTokenReceivedListener(Map tokenMap) {
-        String at = tokenMap.get("access_token").toString();
-        String rt = tokenMap.get("refresh_token").toString();
-        settings.edit().putString("accessToken", at);
-        settings.edit().putString("refreshToken", rt);
-        settings.edit().apply();
+    public void onAccessTokenReceivedListener(AuthResponse authResponse) {
+        settings.edit()
+                .putString("accessToken", authResponse.access_token)
+                .putString("refreshToken", authResponse.refresh_token)
+                .putString("expiresIn", authResponse.expires_in)
+                .apply();
         loadQuickmatchData();
     }
 
@@ -117,9 +117,17 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
 
     public void handleToken(){
         Uri tokenUri = getIntent().getData();
+        //If this isn't coming back from a browser, make it start that auth.
         if (tokenUri == null){
-            OkAuthLib.getInstance(this).init(getApplicationContext()).startAuthentication();
+            String savedToken = settings.getString("accessToken", null);
+            if (savedToken == null){
+                OkAuthLib.getInstance(this).init(getApplicationContext()).startAuthentication();
+            } else{
+                OkAuthLib.getInstance(this).setAccessToken(savedToken);
+                loadQuickmatchData();
+            }
         } else {
+            //if coming back from the browser, read the code.
             String token = tokenUri.getQueryParameter("code");
             OkAuthLib.getInstance(this).init(getApplicationContext()).setAuthorizationCode(token);
         }

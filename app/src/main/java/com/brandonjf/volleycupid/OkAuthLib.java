@@ -10,6 +10,8 @@ import android.webkit.WebView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.brandonjf.volleycupid.okclasses.AuthResponse;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -32,6 +34,7 @@ public class OkAuthLib {
     private String mAuthorizationCode;
     private String mAccessToken;
     private String mRefreshToken;
+    private AuthResponse mAuthResponse;
     private Context mContext;
     private WebView webView;
     private ProgressDialog progressDialog;
@@ -117,6 +120,14 @@ public class OkAuthLib {
     public String getAccessToken(){
         return mAccessToken;
     }
+
+    public void setAuthResponse(AuthResponse authResponse){
+        this.mAuthResponse = authResponse;
+    }
+
+    public AuthResponse getAuthResponse(){
+        return mAuthResponse;
+    }
     public void setRefreshToken(String refreshToken){
         this.mRefreshToken = refreshToken;
     }
@@ -136,14 +147,11 @@ public class OkAuthLib {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        String at = response.getString("access_token");
-                        String rt = response.getString("refresh_token");
-                        setAccessToken(at);
-                        setRefreshToken(rt);
-                        Map<String,String> tokenMap  = new HashMap<String, String>();
-                        tokenMap.put("access_token", at);
-                        tokenMap.put("refresh_token", rt);
-                        okResponseInterface.onAccessTokenReceivedListener(tokenMap);
+                        Gson gson = new Gson();
+                        AuthResponse authResponse = gson.fromJson(response.toString(), AuthResponse.class);
+                        setAuthResponse(authResponse);
+                        setAccessToken(authResponse.access_token);
+                        okResponseInterface.onAccessTokenReceivedListener(authResponse);
                     } catch (Exception e) {
                         Log.d("OkAuthLib", e.toString());
                     }
