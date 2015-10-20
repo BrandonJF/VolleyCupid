@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.brandonjf.volleycupid.ApplicationController;
 import com.brandonjf.volleycupid.CustomPagerAdapter;
 import com.brandonjf.volleycupid.R;
+import com.brandonjf.volleycupid.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
 
@@ -39,6 +39,7 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
         matchViewHolder.age.setText(match.getUserinfo().getAge().toString());
 //        matchViewHolder.userPhoto.setImageUrl(match.getThumbs().get(0).get400x400(), ApplicationController.getInstance().getmImageLoader());
         matchViewHolder.viewPager.setAdapter(new CustomPagerAdapter(matchViewHolder.viewPager.getContext().getApplicationContext(), match));
+        matchViewHolder.viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     }
 
     @Override
