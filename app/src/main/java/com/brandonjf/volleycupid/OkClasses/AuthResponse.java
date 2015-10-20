@@ -20,6 +20,26 @@ public class AuthResponse {
     @SerializedName("refresh_token")
     @Expose
     public String refresh_token;
+    private Long expiration_time;
+
+    public void configureExpirationTime(){
+        Long currentTime = System.currentTimeMillis() / 1000L;
+        Long l = Long.parseLong(expires_in, 10);
+        this.expiration_time = currentTime + l;
+    }
+
+   public String getExpirationTime(){
+       return String.valueOf(this.expiration_time);
+   }
+
+    public static boolean isPastExpiration(String expiresAt){
+        Long currentTime = System.currentTimeMillis() / 1000L;
+        if( currentTime > Long.parseLong(expiresAt)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

@@ -151,6 +151,7 @@ public class OkAuthLib {
                         AuthResponse authResponse = gson.fromJson(response.toString(), AuthResponse.class);
                         setAuthResponse(authResponse);
                         setAccessToken(authResponse.access_token);
+                        authResponse.configureExpirationTime();
                         okResponseInterface.onAccessTokenReceivedListener(authResponse);
                     } catch (Exception e) {
                         Log.d("OkAuthLib", e.toString());
@@ -167,8 +168,40 @@ public class OkAuthLib {
         } catch (Exception e) {
             Log.e("VolleyCupid", "unexpected JSON exception", e);
         }
+    }
 
+    public void setAccessTokenfromRefreshToken(String refreshToken){
+        try {
+            Map<String, String> jsonBody = new HashMap<String, String>();
+            jsonBody.put("client_id", mClientId);
+            jsonBody.put("client_secret", mClientSecret);
+            jsonBody.put("grant_type", "refresh_token");
+            jsonBody.put("refresh_token", refreshToken);
 
+            CustomRequest accessTokenRequest = new CustomRequest(Request.Method.POST, mTokenEndpoint, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        Gson gson = new Gson();
+                        AuthResponse authResponse = gson.fromJson(response.toString(), AuthResponse.class);
+                        setAuthResponse(authResponse);
+                        setAccessToken(authResponse.access_token);
+                        authResponse.configureExpirationTime();
+                        okResponseInterface.onRefreshResponseReceivedListener(authResponse);
+                    } catch (Exception e) {
+                        Log.d("OkAuthLib", e.toString());
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("VolleyCupid", error.toString());
+                }
+            });
 
+            ApplicationController.getInstance().addToRequestQueue(accessTokenRequest);
+        } catch (Exception e) {
+            Log.e("VolleyCupid", "unexpected JSON exception", e);
+        }
     }
 }

@@ -12,4 +12,5 @@ public interface OkResponseInterface {
 
     void onQuickmatchQueueListener(ArrayList<QuickmatchMatch> quickmatchMatches);
     void onAccessTokenReceivedListener(AuthResponse authResponse);
+    void onRefreshResponseReceivedListener(AuthResponse authResponse);
 }

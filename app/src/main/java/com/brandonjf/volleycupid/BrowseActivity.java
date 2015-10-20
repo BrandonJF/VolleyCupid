@@ -91,7 +91,16 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
         settings.edit()
                 .putString("accessToken", authResponse.access_token)
                 .putString("refreshToken", authResponse.refresh_token)
-                .putString("expiresIn", authResponse.expires_in)
+                .putString("expiresAt", authResponse.getExpirationTime())
+                .apply();
+        loadQuickmatchData();
+    }
+
+    @Override
+    public void onRefreshResponseReceivedListener(AuthResponse authResponse) {
+        settings.edit()
+                .putString("accessToken", authResponse.access_token)
+                .putString("expiresAt", authResponse.getExpirationTime())
                 .apply();
         loadQuickmatchData();
     }
@@ -123,8 +132,15 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
             if (savedToken == null){
                 OkAuthLib.getInstance(this).init(getApplicationContext()).startAuthentication();
             } else{
-                OkAuthLib.getInstance(this).setAccessToken(savedToken);
-                loadQuickmatchData();
+                //if the token is past expiration - refresh it.
+                if (AuthResponse.isPastExpiration(settings.getString("expiresAt", "1"))){
+                    OkAuthLib.getInstance(this).init(getApplicationContext()).setAccessTokenfromRefreshToken(settings.getString("refreshToken", null));
+                } else{
+                    OkAuthLib.getInstance(this).setAccessToken(savedToken);
+                    loadQuickmatchData();
+                }
+
+
             }
         } else {
             //if coming back from the browser, read the code.
