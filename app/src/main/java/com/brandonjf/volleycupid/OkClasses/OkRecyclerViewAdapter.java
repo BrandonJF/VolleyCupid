@@ -1,5 +1,6 @@
 package com.brandonjf.volleycupid.okclasses;
 
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.brandonjf.volleycupid.ApplicationController;
+import com.brandonjf.volleycupid.CustomPagerAdapter;
 import com.brandonjf.volleycupid.R;
+import com.brandonjf.volleycupid.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
 
@@ -35,7 +37,9 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
         QuickmatchMatch match = mMatches.get(position);
         matchViewHolder.username.setText(match.getUsername());
         matchViewHolder.age.setText(match.getUserinfo().getAge().toString());
-        matchViewHolder.userPhoto.setImageUrl(match.getThumbs().get(0).get400x400(), ApplicationController.getInstance().getmImageLoader());
+//        matchViewHolder.userPhoto.setImageUrl(match.getThumbs().get(0).get400x400(), ApplicationController.getInstance().getmImageLoader());
+        matchViewHolder.viewPager.setAdapter(new CustomPagerAdapter(matchViewHolder.viewPager.getContext().getApplicationContext(), match));
+        matchViewHolder.viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     }
 
     @Override
@@ -59,6 +63,7 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
         CardView cardView;
         TextView username, age;
         NetworkImageView userPhoto;
+        ViewPager viewPager;
 
         MatchViewHolder(View matchView) {
             super(matchView);
@@ -66,6 +71,9 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
             username = (TextView) matchView.findViewById(R.id.tv_username);
             age = (TextView) matchView.findViewById(R.id.tv_age);
             userPhoto = (NetworkImageView) matchView.findViewById(R.id.user_image);
+            viewPager = (ViewPager) matchView.findViewById(R.id.viewPager);
+//            viewPager.setAdapter(new CustomPagerAdapter(viewPager.getContext().getApplicationContext()));
+
 
 
         }
