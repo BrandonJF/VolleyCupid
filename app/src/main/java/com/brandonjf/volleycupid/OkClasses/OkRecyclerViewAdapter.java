@@ -37,7 +37,7 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
         QuickmatchMatch match = mMatches.get(position);
         matchViewHolder.username.setText(match.getUsername());
         matchViewHolder.age.setText(match.getUserinfo().getAge().toString());
-        matchViewHolder.userPhoto.setImageUrl(match.getThumbs().get(0).get400x400(), ApplicationController.getInstance().getmImageLoader());
+//        matchViewHolder.userPhoto.setImageUrl(match.getThumbs().get(0).get400x400(), ApplicationController.getInstance().getmImageLoader());
         matchViewHolder.viewPager.setAdapter(new CustomPagerAdapter(matchViewHolder.viewPager.getContext().getApplicationContext(), match));
     }
 
