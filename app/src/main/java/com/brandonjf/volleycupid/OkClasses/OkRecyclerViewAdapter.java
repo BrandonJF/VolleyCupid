@@ -1,5 +1,6 @@
 package com.brandonjf.volleycupid.okclasses;
 
+import android.graphics.Typeface;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.brandonjf.volleycupid.CustomPagerAdapter;
 import com.brandonjf.volleycupid.R;
+import com.brandonjf.volleycupid.TypefaceUtils;
 import com.brandonjf.volleycupid.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
@@ -36,8 +38,9 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
     public void onBindViewHolder(MatchViewHolder matchViewHolder, int position) {
         QuickmatchMatch match = mMatches.get(position);
         matchViewHolder.username.setText(match.getUsername());
-        matchViewHolder.age.setText(match.getUserinfo().getAge().toString());
-//        matchViewHolder.userPhoto.setImageUrl(match.getThumbs().get(0).get400x400(), ApplicationController.getInstance().getmImageLoader());
+        matchViewHolder.age.setText("Age " +  match.getUserinfo().getAge().toString());
+        matchViewHolder.username.setTypeface(matchViewHolder.typefaceRegular);
+        matchViewHolder.age.setTypeface(matchViewHolder.typefaceRegular);
         matchViewHolder.viewPager.setAdapter(new CustomPagerAdapter(matchViewHolder.viewPager.getContext().getApplicationContext(), match));
         matchViewHolder.viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     }
@@ -64,14 +67,18 @@ public class OkRecyclerViewAdapter extends RecyclerView.Adapter<OkRecyclerViewAd
         TextView username, age;
         NetworkImageView userPhoto;
         ViewPager viewPager;
+        Typeface typefaceRegular;
+        Typeface typefaceLight;
 
         MatchViewHolder(View matchView) {
             super(matchView);
             cardView = (CardView) matchView.findViewById(R.id.matchCardView);
             username = (TextView) matchView.findViewById(R.id.tv_username);
             age = (TextView) matchView.findViewById(R.id.tv_age);
-            userPhoto = (NetworkImageView) matchView.findViewById(R.id.user_image);
+//            userPhoto = (NetworkImageView) matchView.findViewById(R.id.user_image);
             viewPager = (ViewPager) matchView.findViewById(R.id.viewPager);
+            typefaceRegular = TypefaceUtils.get(matchView.getContext(), "Lato-Regular.ttf");
+            typefaceLight= TypefaceUtils.get(matchView.getContext(), "Lato-Light.ttf");
 //            viewPager.setAdapter(new CustomPagerAdapter(viewPager.getContext().getApplicationContext()));
 
 

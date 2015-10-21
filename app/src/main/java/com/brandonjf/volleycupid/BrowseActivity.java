@@ -109,12 +109,11 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
         settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
     public void handlePageSetup() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView = (RecyclerView) findViewById(R.id.rv_matchList);
-        recyclerView.setLayoutManager(linearLayoutManager);
+       setupRecyclerView();
         alertBar = Snackbar.make(findViewById(R.id.cl_browseCoordinator),"VolleyCupid", Snackbar.LENGTH_SHORT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setElevation(0);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +123,27 @@ public class BrowseActivity extends AppCompatActivity implements OkResponseInter
         });
     }
 
+    public void setupRecyclerView(){
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView = (RecyclerView) findViewById(R.id.rv_matchList);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            //This is what handles the infinite scrolling. Easy peasey.
+            int visibleItemPosition, visibleItemCount, totalItemCount;
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                visibleItemCount = linearLayoutManager.getChildCount();
+                totalItemCount = linearLayoutManager.getItemCount();
+                visibleItemPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                if (visibleItemPosition == totalItemCount - 1){
+                    alertBar.setText("Loading more matches...").setDuration(Snackbar.LENGTH_SHORT).show();
+                    loadQuickmatchData();
+                }
+            }
+        });
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener());
+    }
     public void handleToken(){
         Uri tokenUri = getIntent().getData();
         //If this isn't coming back from a browser, make it start that auth.
