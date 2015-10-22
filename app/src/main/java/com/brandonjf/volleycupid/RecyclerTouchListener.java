@@ -16,7 +16,6 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
         public void onItemDoubleClick(View view, int position);
     }
 
-    public RecyclerTouchListener
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
         return false;
