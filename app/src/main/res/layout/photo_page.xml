@@ -24,10 +24,12 @@
 
 
     <RelativeLayout
+        android:id="@+id/rl_userinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:paddingLeft="75dp">
+        android:paddingLeft="75dp"
+        android:layout_centerVertical="true">
 
         <TextView
             android:id="@+id/tv_username"
@@ -49,15 +51,16 @@
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_userinfo">
 
-        <!--<TextView-->
-            <!--android:id="@+id/tv_percent"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="100"-->
-            <!--android:textColor="#e9e8e8"-->
-            <!--android:textSize="14sp" />-->
+        <TextView
+            android:id="@+id/tv_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textColor="#e9e8e8"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     </RelativeLayout>
